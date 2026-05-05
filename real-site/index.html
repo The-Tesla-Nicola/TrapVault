@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureBank — Official Website</title>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f9fafb;
+            color: #1a1a2e;
+        }
+
+        /* Nav */
+        nav {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0 48px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-brand { font-size: 1.3rem; font-weight: 700; color: #1a1a2e; text-decoration: none; }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a { text-decoration: none; color: #6c757d; font-size: 0.9rem; }
+        .nav-cta {
+            padding: 10px 22px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(160deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+            color: white;
+            padding: 100px 48px;
+            text-align: center;
+        }
+        .hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 20px; line-height: 1.2; }
+        .hero p  { font-size: 1.15rem; opacity: 0.8; max-width: 600px; margin: 0 auto 36px; line-height: 1.7; }
+        .hero-cta {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        /* Features */
+        .features {
+            padding: 80px 48px;
+            background: white;
+        }
+        .features h2 { text-align: center; font-size: 2rem; font-weight: 700; margin-bottom: 48px; }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .feature-card {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 32px 28px;
+            border: 1px solid #e5e7eb;
+        }
+        .feature-icon {
+            width: 48px; height: 48px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+            margin-bottom: 18px;
+        }
+        .feature-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
+        .feature-card p  { font-size: 0.875rem; color: #6c757d; line-height: 1.6; }
+
+        /* Footer */
+        footer {
+            background: #1a1a2e;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            padding: 28px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a class="nav-brand" href="#">SecureBank</a>
+    <ul class="nav-links">
+        <li><a href="#">Personal</a></li>
+        <li><a href="#">Business</a></li>
+        <li><a href="#">Loans</a></li>
+        <li><a href="#">About</a></li>
+    </ul>
+    <a class="nav-cta" href="/">Online Banking Login</a>
+</nav>
+
+<section class="hero">
+    <h1>Banking that works<br>as hard as you do</h1>
+    <p>SecureBank combines enterprise-grade security with an intuitive experience. Manage your finances with confidence, wherever you are.</p>
+    <a class="hero-cta" href="/">Sign In to Online Banking</a>
+</section>
+
+<section class="features">
+    <h2>Why customers choose SecureBank</h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon"></div>
+            <h3>Bank-Level Security</h3>
+            <p>256-bit AES encryption, biometric authentication, and real-time fraud monitoring protect every transaction.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"></div>
+            <h3>Instant Transfers</h3>
+            <p>Send money domestically or internationally in seconds, not days. Zero fees on transfers between SecureBank accounts.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"></div>
+            <h3>24/7 Support</h3>
+            <p>Our security team monitors your account around the clock. Dedicated support available by phone, chat, or email.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"></div>
+            <h3>FDIC Insured</h3>
+            <p>All deposits insured up to $250,000 per depositor. Your money is protected even in unlikely scenarios.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"></div>
+            <h3>Smart Analytics</h3>
+            <p>Categorised spending insights, budget tracking, and personalised financial recommendations built in.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"></div>
+            <h3>Zero Hidden Fees</h3>
+            <p>No monthly maintenance fees, no minimum balance requirements, no ATM fees at 50,000+ locations nationwide.</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    &copy; 2024 SecureBank N.A. &nbsp;|&nbsp; Member FDIC &nbsp;|&nbsp; Equal Housing Lender &nbsp;|&nbsp; NMLS #123456
+    &nbsp;|&nbsp; Privacy Policy &nbsp;|&nbsp; Terms of Service
+</footer>
+
+</body>
+</html>

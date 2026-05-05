@@ -1,0 +1,30 @@
+groups:
+  - name: honeypot_alerts
+    interval: 30s
+    rules:
+      - alert: HighAttackRate
+        expr: honeypot_total_events > 10000
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High attack event volume"
+          description: "Honeypot has captured {{ $value }} total events"
+
+      - alert: ManyBlockedSessions
+        expr: honeypot_blocked_sessions > 100
+        for: 5m
+        labels:
+          severity: info
+        annotations:
+          summary: "Many sessions blocked"
+          description: "{{ $value }} attacker sessions have been blocked"
+
+      - alert: HighCredentialCapture
+        expr: honeypot_captured_creds > 500
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High credential capture rate"
+          description: "{{ $value }} credentials have been captured"

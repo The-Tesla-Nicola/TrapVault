@@ -1,0 +1,43 @@
+{
+  "title": "System Infrastructure — Backend Health",
+  "uid": "infra-health",
+  "schemaVersion": 36,
+  "version": 1,
+  "refresh": "15s",
+  "panels": [
+    {
+      "id": 1, "type": "stat", "title": "Postgres Status",
+      "gridPos": {"h": 4, "w": 8, "x": 0, "y": 0},
+      "targets": [{"expr": "pg_up", "refId": "A"}],
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "colorMode": "background"},
+      "fieldConfig": {"defaults": {"mappings": [{"type": "value", "options": {"0": {"text": "DOWN", "color": "red"}, "1": {"text": "ONLINE", "color": "green"}}}]}}
+    },
+    {
+      "id": 2, "type": "stat", "title": "Redis Status",
+      "gridPos": {"h": 4, "w": 8, "x": 8, "y": 0},
+      "targets": [{"expr": "redis_up", "refId": "A"}],
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "colorMode": "background"},
+      "fieldConfig": {"defaults": {"mappings": [{"type": "value", "options": {"0": {"text": "DOWN", "color": "red"}, "1": {"text": "ONLINE", "color": "green"}}}]}}
+    },
+    {
+      "id": 3, "type": "stat", "title": "Nginx Status",
+      "gridPos": {"h": 4, "w": 8, "x": 16, "y": 0},
+      "targets": [{"expr": "nginx_up", "refId": "A"}],
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "colorMode": "background"},
+      "fieldConfig": {"defaults": {"mappings": [{"type": "value", "options": {"0": {"text": "DOWN", "color": "red"}, "1": {"text": "ONLINE", "color": "green"}}}]}}
+    },
+    {
+      "id": 4, "type": "timeseries", "title": "Postgres Active Connections",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
+      "targets": [{"expr": "pg_stat_activity_count", "legendFormat": "Connections", "refId": "A"}],
+      "options": {"legend": {"displayMode": "table", "placement": "right"}}
+    },
+    {
+      "id": 5, "type": "timeseries", "title": "Redis Memory Usage",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
+      "targets": [{"expr": "redis_memory_used_bytes", "legendFormat": "Used Memory", "refId": "A"}],
+      "fieldConfig": {"defaults": {"unit": "bytes"}},
+      "options": {"legend": {"displayMode": "table", "placement": "right"}}
+    }
+  ]
+}

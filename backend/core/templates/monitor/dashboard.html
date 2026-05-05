@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureBank SIEM — Intelligence Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/siem/css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body class="bg-gray-50 font-sans text-gray-900">
+    <!-- Authenticated UI Shell -->
+    <div id="auth-check" class="hidden">
+        <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-white border-r border-gray-200 z-50 transition-transform">
+            <div class="p-6 border-b border-gray-100">
+                <h1 class="text-xl font-bold text-primary flex items-center gap-2">
+                    <span class="w-8 h-8 bg-primary text-white rounded flex items-center justify-center">S</span>
+                    SecureBank SIEM
+                </h1>
+            </div>
+            <nav class="p-4 space-y-1" id="nav-menu">
+                <!-- Nav items generated dynamically -->
+            </nav>
+            <div class="absolute bottom-0 left-0 w-full p-4 border-t border-gray-100">
+                <div class="text-[10px] text-gray-400 font-mono uppercase text-center">Threat Intelligence v4.2.1</div>
+            </div>
+        </aside>
+
+        <main class="ml-64 min-h-screen">
+            <header class="bg-white border-b border-gray-200 sticky top-0 z-40 px-8 py-4 flex justify-between items-center">
+                <div id="page-title" class="text-xl font-semibold text-gray-800">Dashboard</div>
+                <div class="flex items-center gap-4">
+                    <span id="last-updated" class="text-xs text-gray-500 font-mono">Sync: --:--:--</span>
+                    <button id="refresh-btn" class="p-2 hover:bg-gray-100 rounded-full transition-colors" title="Force Refresh">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.001 0 01-15.357-2m15.357 2H15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <div class="h-8 w-px bg-gray-200"></div>
+                    <div class="flex items-center gap-3">
+                        <div class="text-right">
+                            <div id="user-name" class="text-sm font-medium">--</div>
+                            <div id="user-role" class="text-[10px] text-gray-500 uppercase tracking-widest">--</div>
+                        </div>
+                        <div id="user-avatar" class="w-10 h-10 bg-primary-dark text-white rounded-full flex items-center justify-center font-bold">?</div>
+                        <button id="logout-btn" class="ml-2 text-gray-400 hover:text-danger p-2 hover:bg-red-50 rounded-lg transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div id="content-area" class="p-8">
+                <!-- Page content injected here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Full Screen Login -->
+    <div id="login-screen" class="fixed inset-0 bg-gray-900 z-[100] flex items-center justify-center hidden">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-800">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center text-3xl font-bold mx-auto mb-4 shadow-lg">S</div>
+                <h2 class="text-2xl font-bold">Internal SIEM Access</h2>
+                <p class="text-gray-500 mt-2 text-sm">Monitor intelligence from the honeypot array.</p>
+            </div>
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Operator Identity</label>
+                    <input type="text" id="username" required placeholder="Enter username..." class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:bg-white transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Security Key</label>
+                    <input type="password" id="password" required placeholder="••••••••" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:bg-white transition-all">
+                </div>
+                <div id="login-error" class="hidden text-danger text-xs font-bold bg-red-50 p-4 rounded-xl border border-red-100 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span id="error-msg">Authorization failed.</span>
+                </div>
+                <button type="submit" class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 transition-all transform active:scale-[0.98]">AUTHORIZE OPERATOR</button>
+            </form>
+            <div class="mt-8 text-center border-t pt-6">
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest font-mono">Restricted Access System</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="/static/siem/js/app.js"></script>
+</body>
+</html>

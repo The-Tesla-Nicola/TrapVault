@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SecureBank — Dashboard</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; background: #f3f4f6; }
+        nav { background: #1e3a8a; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; }
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+        .card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        h1, h2 { color: #111827; }
+        .balance { font-size: 2.5rem; font-weight: bold; color: #059669; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e5e7eb; }
+        .status-real { color: #059669; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <nav>
+        <span>SecureBank Online</span>
+        <a href="/" style="color: white; text-decoration: none;">Logout</a>
+    </nav>
+    <div class="container">
+        <div class="card">
+            <span class="status-real">✓ SECURE SESSION ACTIVE</span>
+            <h1>Welcome back, <span id="user-name">User</span></h1>
+            <p>Account Number: <span id="account-num">****-****-****</span></p>
+            <div class="balance">$12,847.53</div>
+            <p>Available Balance</p>
+        </div>
+
+        <div class="card">
+            <h2>Recent Transactions</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2024-03-31</td>
+                        <td>Internal Transfer</td>
+                        <td>-$1,000.00</td>
+                        <td>Completed</td>
+                    </tr>
+                    <tr>
+                        <td>2024-03-30</td>
+                        <td>ATM Withdrawal</td>
+                        <td>-$200.00</td>
+                        <td>Completed</td>
+                    </tr>
+                    <tr>
+                        <td>2024-03-29</td>
+                        <td>Direct Deposit — PAYROLL</td>
+                        <td>+$5,250.00</td>
+                        <td>Completed</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        // In a real app, this would be populated by the JWT or a secure API call
+        const user = JSON.parse(localStorage.getItem('hp_user') || '{}');
+        if (user.name) document.getElementById('user-name').textContent = user.name;
+        if (user.account) document.getElementById('account-num').textContent = user.account;
+    </script>
+</body>
+</html>

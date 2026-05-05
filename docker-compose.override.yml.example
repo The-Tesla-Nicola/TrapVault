@@ -1,0 +1,29 @@
+# Docker Compose Override
+# Copy this file to docker-compose.override.yml and customize for local development
+
+version: '3.8'
+
+services:
+  # Override backend for development
+  backend:
+    environment:
+      DEBUG: 'True'
+    volumes:
+      - ./backend:/app
+    command: python manage.py runserver 0.0.0.0:8000
+
+  # Override nginx for development
+  nginx:
+    ports:
+      - "80:80"
+      - "443:443"
+
+  # Add local metrics service
+  prometheus:
+    ports:
+      - "9090:9090"
+
+  # Add local Grafana
+  grafana:
+    ports:
+      - "3001:3000"
