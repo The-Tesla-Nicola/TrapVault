@@ -7,7 +7,7 @@
 COMPOSE := $(shell docker compose version > /dev/null 2>&1 && echo "docker compose" || echo "docker-compose")
 
 help:
-	@printf "\nEnterprise Honeypot + SIEM — available targets\n\n"
+	@printf "\nTrapVault — available targets\n\n"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
 	  awk 'BEGIN {FS = ":.*?## "}; {printf "  %-24s %s\n", $$1, $$2}'
 	@printf "\n"

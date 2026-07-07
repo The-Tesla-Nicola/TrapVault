@@ -1,4 +1,4 @@
-# Enterprise Honeypot + SIEM Platform
+# TrapVault
 ## Professional-Grade Adaptive Deception & Automated Threat Orchestration
 
 [![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://python.org)
@@ -129,8 +129,8 @@ Threat Score > 150 → Auto-Block
 
 ```bash
 # Clone repository
-git clone https://github.com/YOUR_USERNAME/enterprise-honeypot-pro.git
-cd enterprise-honeypot-pro
+git clone https://github.com/YOUR_USERNAME/TrapVault.git
+cd TrapVault
 
 # Configure environment
 cp .env.example .env
@@ -205,7 +205,7 @@ curl -X POST http://localhost/api/search \
 ## 📁 Project Structure
 
 ```
-enterprise-honeypot-pro/
+TrapVault/
 ├── backend/
 │   ├── core/
 │   │   ├── middleware.py          # WAF + Attack Detection
@@ -478,8 +478,8 @@ Contributions welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
 
 ```bash
 # Fork repo, then:
-git clone https://github.com/YOUR_USERNAME/enterprise-honeypot-pro.git
-cd enterprise-honeypot-pro
+git clone https://github.com/YOUR_USERNAME/TrapVault.git
+cd TrapVault
 
 # Create feature branch
 git checkout -b feature/amazing-feature
@@ -520,7 +520,7 @@ MIT License - see [LICENSE](LICENSE) for details
 
 If this project helped your research, please ⭐ star the repository!
 
-[![Star History Chart](https://api.star-history.com/svg?repos=YOUR_USERNAME/enterprise-honeypot-pro&type=Date)](https://star-history.com/#YOUR_USERNAME/enterprise-honeypot-pro&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=YOUR_USERNAME/TrapVault&type=Date)](https://star-history.com/#YOUR_USERNAME/TrapVault&Date)
 
 ---
 

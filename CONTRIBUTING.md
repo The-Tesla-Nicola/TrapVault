@@ -1,4 +1,4 @@
-# Contributing to Enterprise Honeypot + SIEM Platform
+# Contributing to TrapVault
 
 Thank you for your interest in contributing!
 
@@ -6,8 +6,8 @@ Thank you for your interest in contributing!
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/enterprise-honeypot-pro.git
-cd enterprise-honeypot-pro
+git clone https://github.com/YOUR_USERNAME/TrapVault.git
+cd TrapVault
 
 # Set up Python virtual environment
 cd backend

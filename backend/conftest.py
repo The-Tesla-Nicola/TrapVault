@@ -1,5 +1,5 @@
 """
-Pytest configuration and fixtures for Enterprise Honeypot + SIEM tests.
+Pytest configuration and fixtures for TrapVault tests.
 """
 
 import os

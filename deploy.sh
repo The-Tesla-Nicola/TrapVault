@@ -1,6 +1,6 @@
 #!/bin/bash
 # =============================================================================
-# Enterprise Honeypot + SIEM - Quick Start Script
+# TrapVault - Quick Start Script
 # =============================================================================
 # This script deploys the enhanced honeypot with ML, Threat Intel, and SOAR
 # Usage: ./deploy.sh
@@ -9,7 +9,7 @@
 set -e  # Exit on error
 
 echo "=========================================="
-echo "Enterprise Honeypot + SIEM Deployment"
+echo "TrapVault Deployment"
 echo "=========================================="
 echo ""
 
