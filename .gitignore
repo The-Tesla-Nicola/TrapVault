@@ -64,7 +64,7 @@ db.sqlite3-journal
 *.crt
 
 # Docker
-.dockerignore
+# NOTE: .dockerignore is committed intentionally (needed for builds)
 
 # Secrets and credentials
 credentials.json

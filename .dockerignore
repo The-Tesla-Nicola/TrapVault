@@ -1,0 +1,99 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# CI / tooling caches
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+.tox/
+.coverage
+htmlcov/
+
+# Environment files (keep .env.example)
+.env
+.env.local
+.env.*.local
+
+# Secrets
+*.pem
+*.key
+*.crt
+credentials.json
+secrets.yaml
+
+# Frontend deps / build
+node_modules/
+frontend/dist/
+frontend/build/
+.cache/
+*.tgz
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local data / database
+*.sql.gz
+postgres_data/
+redis_data/
+prometheus_data/
+grafana_data/
+
+# ML models (large binaries)
+ml_models/*.pkl
+ml_models/*.joblib
+
+# GeoIP databases
+backend/geoip/*.mmdb
+backend/geoip/*.dat
+
+# Local scratch / test files
+backend/quick.py
+backend/quick_attack.py
+backend/attack_gen.py
+backend/clear_cache.py
+backend/internal_test.py
+tmp/
+temp/
+*.tmp
+
+# Local-only / large research artifacts
+_archive/
+docs/
+*.pdf
+RESEARCH_PAPER.md
+RESEARCH_PAPER_TEMPLATE.md
+Microsoft/
+
+# Claude / AI tool profiles
+.claude/
+.claudex-profile.json
