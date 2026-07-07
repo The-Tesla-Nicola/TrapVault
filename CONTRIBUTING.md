@@ -6,7 +6,7 @@ Thank you for your interest in contributing!
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/enterprise-honeypot-pro.git
+git clone https://github.com/YOUR_USERNAME/enterprise-honeypot-pro.git
 cd enterprise-honeypot-pro
 
 # Set up Python virtual environment

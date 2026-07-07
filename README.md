@@ -129,7 +129,7 @@ Threat Score > 150 → Auto-Block
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/enterprise-honeypot-pro.git
+git clone https://github.com/YOUR_USERNAME/enterprise-honeypot-pro.git
 cd enterprise-honeypot-pro
 
 # Configure environment
@@ -510,9 +510,9 @@ MIT License - see [LICENSE](LICENSE) for details
 
 ## 📞 Contact
 
-**Project Maintainer:** Your Name  
-**Email:** your.email@university.edu  
-**LinkedIn:** [linkedin.com/in/yourprofile](https://linkedin.com)
+**Project Maintainer:** YOUR NAME  
+**Email:** YOUR_EMAIL  
+**LinkedIn:** [linkedin.com/in/YOURPROFILE](https://linkedin.com)
 
 ---
 
@@ -520,7 +520,7 @@ MIT License - see [LICENSE](LICENSE) for details
 
 If this project helped your research, please ⭐ star the repository!
 
-[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/enterprise-honeypot-pro&type=Date)](https://star-history.com/#yourusername/enterprise-honeypot-pro&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=YOUR_USERNAME/enterprise-honeypot-pro&type=Date)](https://star-history.com/#YOUR_USERNAME/enterprise-honeypot-pro&Date)
 
 ---
 

@@ -106,3 +106,36 @@ redis_data/
 tmp/
 temp/
 *.tmp
+
+# Claude / AI tool profiles
+.claudex-profile.json
+.claude/
+
+# Scratch / local test files
+backend/quick.py
+backend/quick_attack.py
+backend/attack_gen.py
+backend/clear_cache.py
+backend/internal_test.py
+
+# Windows junk
+Microsoft/
+Thumbs.db
+
+# Archive / old backups
+_archive/
+
+# Large research files (keep locally, don't commit)
+*.pdf
+Enhancing_Fraud_Detection_in_Banking_With_Deep_Learning_Graph_Neural_Networks_and_Autoencoders_for_Real-Time_Credit_Card_Fraud_Prevention.txt
+
+# Documentation (keep locally)
+docs/
+RESEARCH_PAPER.md
+RESEARCH_PAPER_TEMPLATE.md
+
+# Backend static files
+backend/staticfiles/
+
+# Frontend build
+frontend/dist/

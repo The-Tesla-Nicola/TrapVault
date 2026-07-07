@@ -26,6 +26,7 @@ celery>=5.3
 
 # Security
 bcrypt>=4.1
+cffi>=1.12
 cryptography>=41.0
 PyJWT>=2.8
 

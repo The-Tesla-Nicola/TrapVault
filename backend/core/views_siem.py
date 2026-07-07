@@ -38,6 +38,33 @@ logger = logging.getLogger("honeypot.siem_api")
 @api_view(["GET"])
 @authentication_classes([])
 @monitor_auth_required
+def siem_live_feed(request):
+    """Real-time live feed of recent honeypot events."""
+    limit = int(request.GET.get("limit", 50))
+    since = timezone.now() - timedelta(minutes=30)
+
+    attacks = list(
+        SiemAlert.objects.filter(timestamp__gte=since)
+        .values(
+            "id",
+            "timestamp",
+            "attack_type",
+            "severity",
+            "fingerprint",
+            "source_ip",
+            "confidence",
+        )
+        .order_by("-timestamp")[:limit]
+    )
+    for a in attacks:
+        a["timestamp"] = a["timestamp"].isoformat()
+
+    return Response({"events": attacks, "count": len(attacks)})
+
+
+@api_view(["GET"])
+@authentication_classes([])
+@monitor_auth_required
 def siem_overview(request):
     now = timezone.now()
     h1 = now - timedelta(hours=1)
