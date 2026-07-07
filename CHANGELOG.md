@@ -19,7 +19,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - SIEM_BLOCK_THRESHOLD corrected to 120
 
 ### Changed
-- .env now uses placeholder values instead of hardcoded secrets
 - JWT secrets now require 32+ character hex strings
 
 ## [1.0.0] - 2024-01-01
