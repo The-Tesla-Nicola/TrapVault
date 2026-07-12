@@ -1,9 +1,5 @@
 services:
 
-  # ---------------------------------------------------------------------------
-  # PostgreSQL 16
-  # IMPORTANT: Set POSTGRES_PASSWORD in .env file before production!
-  # ---------------------------------------------------------------------------
   postgres:
     image: postgres:16-alpine
     restart: unless-stopped
@@ -29,10 +25,6 @@ services:
     networks:
       - honeypot-net
 
-  # ---------------------------------------------------------------------------
-  # Redis 7
-  # IMPORTANT: Set REDIS_PASSWORD in .env file before production!
-  # ---------------------------------------------------------------------------
   redis:
     image: redis:7-alpine
     restart: unless-stopped
@@ -55,9 +47,6 @@ services:
     networks:
       - honeypot-net
 
-  # ---------------------------------------------------------------------------
-  # Django backend (Gunicorn)
-  # ---------------------------------------------------------------------------
   backend:
     build:
       context:    ./backend
@@ -105,14 +94,11 @@ services:
       SMTP_HOST:          ${SMTP_HOST:-}
       SMTP_USER:          ${SMTP_USER:-}
       SMTP_PASSWORD:      ${SMTP_PASSWORD:-}
-      ALERT_EMAIL_FROM:   ${ALERT_EMAIL_FROM:-siem@honeypot.local}
+      ALERT_EMAIL_FROM:   ${ALERT_EMAIL_FROM:-siem@yourdomain.com}
       ALERT_EMAIL_TO:     ${ALERT_EMAIL_TO:-}
     networks:
       - honeypot-net
 
-  # ---------------------------------------------------------------------------
-  # Celery worker
-  # ---------------------------------------------------------------------------
   celery-worker:
     build:
       context:    ./backend
@@ -147,9 +133,6 @@ services:
     networks:
       - honeypot-net
 
-  # ---------------------------------------------------------------------------
-  # Celery beat scheduler
-  # ---------------------------------------------------------------------------
   celery-beat:
     build:
       context:    ./backend
@@ -181,9 +164,6 @@ services:
     networks:
       - honeypot-net
 
-  # ---------------------------------------------------------------------------
-  # Nginx reverse proxy
-  # ---------------------------------------------------------------------------
   nginx:
     image: nginx:1.25-alpine
     restart: unless-stopped
@@ -211,9 +191,6 @@ services:
     networks:
       - honeypot-net
 
-  # ---------------------------------------------------------------------------
-  # Prometheus metrics (DISABLED FOR FREE TIER - Enable on t3.small+)
-  # ---------------------------------------------------------------------------
   # prometheus:
   #   image: prom/prometheus:v2.48.0
   #   restart: unless-stopped
@@ -231,9 +208,6 @@ services:
   #   networks:
   #     - honeypot-net
 
-  # ---------------------------------------------------------------------------
-  # Grafana dashboards (DISABLED FOR FREE TIER - Enable on t3.small+)
-  # ---------------------------------------------------------------------------
   # grafana:
   #   image: grafana/grafana:10.2.0
   #   restart: unless-stopped

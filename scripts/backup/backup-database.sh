@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
-# ---------------------------------------------------------------------------
 # Backup PostgreSQL database from a running Docker Compose stack.
-# Usage:  ./scripts/backup/backup-database.sh
-# ---------------------------------------------------------------------------
+# Usage: ./scripts/backup/backup-database.sh
+
 set -euo pipefail
 
 BACKUP_DIR="./backups"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-FILENAME="honeypot_${TIMESTAMP}.sql.gz"
+FILENAME="trapvault_${TIMESTAMP}.sql.gz"
 
 mkdir -p "${BACKUP_DIR}"
 
@@ -22,6 +21,5 @@ docker compose exec -T postgres \
 
 echo "Backup complete: ${BACKUP_DIR}/${FILENAME}"
 
-# Prune backups older than 30 days
-find "${BACKUP_DIR}" -name "honeypot_*.sql.gz" -mtime +30 -delete
+find "${BACKUP_DIR}" -name "trapvault_*.sql.gz" -mtime +30 -delete
 echo "Old backups pruned."

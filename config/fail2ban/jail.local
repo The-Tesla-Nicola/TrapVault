@@ -1,4 +1,4 @@
-# Fail2Ban jail configuration for Honeypot
+# Fail2Ban jail configuration for TrapVault
 # Copy to /etc/fail2ban/jail.local on the server
 
 [DEFAULT]
@@ -25,5 +25,3 @@ maxretry = 10
 findtime = 600
 bantime = 3600
 action = iptables-allports
-
-# Custom filter for honeypot attack detection

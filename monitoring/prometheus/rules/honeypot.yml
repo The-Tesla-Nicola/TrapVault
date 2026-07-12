@@ -9,7 +9,7 @@ groups:
           severity: warning
         annotations:
           summary: "High attack event volume"
-          description: "Honeypot has captured {{ $value }} total events"
+          description: "{{ $value }} total events captured"
 
       - alert: ManyBlockedSessions
         expr: honeypot_blocked_sessions > 100
@@ -18,7 +18,7 @@ groups:
           severity: info
         annotations:
           summary: "Many sessions blocked"
-          description: "{{ $value }} attacker sessions have been blocked"
+          description: "{{ $value }} attacker sessions blocked"
 
       - alert: HighCredentialCapture
         expr: honeypot_captured_creds > 500
@@ -27,4 +27,4 @@ groups:
           severity: warning
         annotations:
           summary: "High credential capture rate"
-          description: "{{ $value }} credentials have been captured"
+          description: "{{ $value }} credentials captured"

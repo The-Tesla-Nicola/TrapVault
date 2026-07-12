@@ -242,7 +242,7 @@ const DashboardPage: React.FC<Props> = ({ user, onLogout }) => {
           {tab === 'settings' && (
             <div style={s.settingsGrid}>
               {[
-                { title: 'Profile Information', items: [{ label: 'Full Name', val: user.name || user.username }, { label: 'Email Address', val: user.email || 'michael@securebank.com' }, { label: 'Phone Number', val: '+1 (555) 000-0000' }, { label: 'Date of Birth', val: '●●/●●/●●●●' }] },
+                { title: 'Profile Information', items: [{ label: 'Full Name', val: user.name || user.username }, { label: 'Email Address', val: user.email || 'user@securebank.com' }, { label: 'Phone Number', val: '+1 (555) 000-0000' }, { label: 'Date of Birth', val: '●●/●●/●●●●' }] },
                 { title: 'Security Settings', items: [{ label: 'Two-Factor Auth', val: '✅ Enabled (TOTP)' }, { label: 'Last Login', val: new Date().toLocaleString() }, { label: 'Login Alerts', val: 'Email + SMS' }, { label: 'Active Sessions', val: '1 device' }] },
                 { title: 'Notification Preferences', items: [{ label: 'Transaction Alerts', val: 'All transactions' }, { label: 'Login Alerts', val: 'Enabled' }, { label: 'Statement Ready', val: 'Email' }, { label: 'Fraud Alerts', val: 'SMS + Email' }] },
                 { title: 'Privacy & Data', items: [{ label: 'Data Sharing', val: 'Opt-out' }, { label: 'Marketing', val: 'Disabled' }, { label: 'Analytics', val: 'Functional only' }, { label: 'Download My Data', val: 'Request export →' }] },

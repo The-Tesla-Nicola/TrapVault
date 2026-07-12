@@ -11,7 +11,6 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "honeypot.settings")
 
 
 def pytest_configure():
-    """Configure Django for testing."""
     from django.conf import settings
 
     if not settings.configured:
@@ -36,13 +35,11 @@ def pytest_configure():
 
 @pytest.fixture
 def db_setup(db):
-    """Setup test database."""
     pass
 
 
 @pytest.fixture
 def monitor_user(db):
-    """Create a test monitor user."""
     from core.models import MonitorUser
 
     return MonitorUser.objects.create_user(
@@ -52,7 +49,6 @@ def monitor_user(db):
 
 @pytest.fixture
 def attacker_session(db):
-    """Create a test attacker session."""
     from core.models import AttackerSession
 
     return AttackerSession.objects.create(
@@ -64,7 +60,6 @@ def attacker_session(db):
 
 @pytest.fixture
 def siem_request_data():
-    """Sample SIEM request data for testing."""
     return {
         "ip": "192.168.1.100",
         "user_agent": "Mozilla/5.0",

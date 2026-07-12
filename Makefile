@@ -12,7 +12,6 @@ help:
 	  awk 'BEGIN {FS = ":.*?## "}; {printf "  %-24s %s\n", $$1, $$2}'
 	@printf "\n"
 
-# ── Development ──────────────────────────────────────────────────────────────
 build: ## Build all Docker images
 	$(COMPOSE) build
 
@@ -20,7 +19,6 @@ up: ## Start all services (detached)
 	$(COMPOSE) up -d
 	@printf "\n  Honeypot (attacker view) : http://localhost\n"
 	@printf "  SIEM Dashboard           : http://localhost/monitor/siem/\n"
-	@printf "  Monitor (classic)        : http://localhost/monitor/\n"
 	@printf "  Grafana                  : http://localhost:3001\n"
 	@printf "  Prometheus               : http://localhost:9090\n\n"
 
@@ -47,7 +45,6 @@ ps: ## Show running containers
 stats: ## Show container resource usage
 	docker stats
 
-# ── Database ──────────────────────────────────────────────────────────────────
 migrate: ## Run Django migrations
 	$(COMPOSE) exec backend python manage.py migrate
 
@@ -71,16 +68,14 @@ reset-db: ## DESTRUCTIVE: drop and recreate the database
 	@sleep 8
 	$(COMPOSE) exec backend python manage.py migrate
 
-# ── Full first-time initialisation ────────────────────────────────────────────
 setup: ## Complete first-time setup: migrate + admin user + seed data
 	$(COMPOSE) exec backend python manage.py migrate
-	$(COMPOSE) exec backend python manage.py create_monitor_user cyber_admin CyB3r_P@ssw0rd!99 --role admin
+	$(COMPOSE) exec backend python manage.py create_monitor_user admin CHANGE_THIS_PASSWORD --role admin
 	$(COMPOSE) exec backend python manage.py seed_real_users
 	$(COMPOSE) exec backend python manage.py seed_alert_rules
 	@printf "\n  Setup complete.\n"
-	@printf "  SIEM login: http://localhost/monitor/siem/  (cyber_admin / CyB3r_P@ssw0rd!99)\n\n"
+	@printf "  SIEM login: http://localhost/monitor/siem/  (admin / CHANGE_THIS_PASSWORD)\n\n"
 
-# ── Code quality ──────────────────────────────────────────────────────────────
 lint: ## Run Python (flake8) and JS (eslint) linters
 	$(COMPOSE) exec backend flake8 .
 	$(COMPOSE) exec backend black --check .
@@ -92,17 +87,15 @@ test: ## Run all tests
 	$(COMPOSE) exec backend pytest --cov=. --cov-report=term-missing
 
 security-scan: ## Scan with Trivy + Bandit
-	trivy image enterprise-honeypot-backend:latest
+	trivy image trapvault-backend:latest
 	$(COMPOSE) exec backend bandit -r . -x ./venv,./tests -f json -o /tmp/bandit.json || true
 
-# ── Backup / restore ──────────────────────────────────────────────────────────
 backup: ## Backup PostgreSQL database
 	./scripts/backup/backup-database.sh
 
 restore: ## Restore from backup  [BACKUP=path/to/file.sql.gz]
 	./scripts/backup/restore-database.sh $(BACKUP)
 
-# ── Deployment ────────────────────────────────────────────────────────────────
 deploy-dev: ## Deploy to development Kubernetes overlay
 	kubectl apply -k infrastructure/kubernetes/overlays/dev
 
@@ -116,7 +109,6 @@ deploy-prod: ## Deploy to production Kubernetes overlay (confirms)
 ssl: ## Obtain Let's Encrypt cert  [DOMAIN=x EMAIL=y]
 	./scripts/deployment/setup-ssl.sh $(DOMAIN) $(EMAIL)
 
-# ── Cleanup ───────────────────────────────────────────────────────────────────
 clean: ## Remove containers, volumes, build caches
 	$(COMPOSE) down -v --remove-orphans
 	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
@@ -126,7 +118,6 @@ clean: ## Remove containers, volumes, build caches
 clean-all: clean ## Deep clean including node_modules
 	rm -rf frontend/node_modules backend/venv
 
-# ── First-time local setup ────────────────────────────────────────────────────
 init: ## Initialise project from scratch
 	@cp -n .env.example .env || true
 	@printf "Copied .env.example -> .env\n"

@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 env:
-  POSTGRES_DB: test_honeypot
+  POSTGRES_DB: test_trapvault
   POSTGRES_USER: test_user
   POSTGRES_PASSWORD: test_password
 

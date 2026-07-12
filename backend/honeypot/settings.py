@@ -261,10 +261,7 @@ HONEYPOT_CONFIG = {
     # Legitimate test users bypass (set via env var, comma-separated)
     "LEGITIMATE_BYPASS_USERS": [
         u.strip().lower()
-        for u in os.environ.get(
-            "LEGITIMATE_BYPASS_USERS",
-            "michael.scott,dwight.schrute"
-        ).split(",")
+        for u in os.environ.get("LEGITIMATE_BYPASS_USERS", "").split(",")
         if u.strip()
     ],
 }
@@ -280,7 +277,7 @@ ALERT_CONFIG = {
     "SMTP_PORT": os.environ.get("SMTP_PORT", "587"),
     "SMTP_USER": os.environ.get("SMTP_USER", ""),
     "SMTP_PASSWORD": os.environ.get("SMTP_PASSWORD", ""),
-    "ALERT_EMAIL_FROM": os.environ.get("ALERT_EMAIL_FROM", "siem@honeypot.local"),
+    "ALERT_EMAIL_FROM": os.environ.get("ALERT_EMAIL_FROM", "siem@yourdomain.com"),
     "ALERT_EMAIL_TO": os.environ.get("ALERT_EMAIL_TO", ""),
 }
 
@@ -338,7 +335,7 @@ LOGGING = {
         "level": "INFO",
     },
     "loggers": {
-        "honeypot": {
+        "trapvault": {
             "handlers": ["console"],
             "level": "DEBUG",
             "propagate": False,

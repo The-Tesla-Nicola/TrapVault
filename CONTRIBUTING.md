@@ -5,24 +5,21 @@ Thank you for your interest in contributing!
 ## Development Setup
 
 ```bash
-# Clone the repository
 git clone https://github.com/YOUR_USERNAME/TrapVault.git
 cd TrapVault
 
-# Set up Python virtual environment
+# Backend
 cd backend
 python3 -m venv venv
-source venv/bin/activate  # Linux/Mac
-# or: venv\Scripts\activate  # Windows
+source venv/bin/activate
 pip install -r requirements.txt
 
-# Set up Node.js frontend
+# Frontend
 cd ../frontend
 npm install
 
-# Configure environment
+# Configure
 cp .env.example .env
-# Edit .env with your settings
 
 # Run tests
 make test
@@ -55,8 +52,8 @@ chore: maintenance
 2. Create a feature branch: `git checkout -b feature/amazing-feature`
 3. Make your changes
 4. Run tests: `make test`
-5. Commit your changes: `git commit -am 'feat: add amazing feature'`
-6. Push to your fork: `git push origin feature/amazing-feature`
+5. Commit: `git commit -am 'feat: add amazing feature'`
+6. Push: `git push origin feature/amazing-feature`
 7. Submit a Pull Request
 
 ## Reporting Issues
