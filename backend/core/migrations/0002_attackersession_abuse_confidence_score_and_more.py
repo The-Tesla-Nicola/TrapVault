@@ -8,99 +8,232 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0001_initial'),
+        ("core", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='attackersession',
-            name='abuse_confidence_score',
-            field=models.IntegerField(default=0, help_text='AbuseIPDB score 0-100'),
+            model_name="attackersession",
+            name="abuse_confidence_score",
+            field=models.IntegerField(default=0, help_text="AbuseIPDB score 0-100"),
         ),
         migrations.AddField(
-            model_name='attackersession',
-            name='block_expires_at',
+            model_name="attackersession",
+            name="block_expires_at",
             field=models.DateTimeField(blank=True, db_index=True, null=True),
         ),
         migrations.AddField(
-            model_name='attackersession',
-            name='isp',
-            field=models.CharField(default='Unknown', max_length=255),
+            model_name="attackersession",
+            name="isp",
+            field=models.CharField(default="Unknown", max_length=255),
         ),
         migrations.AlterField(
-            model_name='attackersession',
-            name='threat_level',
-            field=models.CharField(choices=[('critical', 'Critical'), ('high', 'High'), ('medium', 'Medium'), ('low', 'Low'), ('minimal', 'Minimal'), ('unknown', 'Unknown')], db_index=True, default='minimal', max_length=20),
+            model_name="attackersession",
+            name="threat_level",
+            field=models.CharField(
+                choices=[
+                    ("critical", "Critical"),
+                    ("high", "High"),
+                    ("medium", "Medium"),
+                    ("low", "Low"),
+                    ("minimal", "Minimal"),
+                    ("unknown", "Unknown"),
+                ],
+                db_index=True,
+                default="minimal",
+                max_length=20,
+            ),
         ),
         migrations.CreateModel(
-            name='ThreatIntelCache',
+            name="ThreatIntelCache",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('ip_address', models.GenericIPAddressField(db_index=True, unique=True)),
-                ('country', models.CharField(default='Unknown', max_length=100)),
-                ('country_code', models.CharField(default='XX', max_length=2)),
-                ('city', models.CharField(default='Unknown', max_length=100)),
-                ('latitude', models.FloatField(default=0.0)),
-                ('longitude', models.FloatField(default=0.0)),
-                ('isp', models.CharField(default='Unknown', max_length=255)),
-                ('abuse_confidence_score', models.IntegerField(default=0)),
-                ('total_reports', models.IntegerField(default=0)),
-                ('last_reported', models.DateTimeField(blank=True, null=True)),
-                ('threat_level', models.CharField(default='unknown', max_length=20)),
-                ('risk_score', models.FloatField(default=0.0)),
-                ('is_tor', models.BooleanField(default=False)),
-                ('is_vpn', models.BooleanField(default=False)),
-                ('is_proxy', models.BooleanField(default=False)),
-                ('cached_at', models.DateTimeField(auto_now=True)),
-                ('expires_at', models.DateTimeField(db_index=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "ip_address",
+                    models.GenericIPAddressField(db_index=True, unique=True),
+                ),
+                ("country", models.CharField(default="Unknown", max_length=100)),
+                ("country_code", models.CharField(default="XX", max_length=2)),
+                ("city", models.CharField(default="Unknown", max_length=100)),
+                ("latitude", models.FloatField(default=0.0)),
+                ("longitude", models.FloatField(default=0.0)),
+                ("isp", models.CharField(default="Unknown", max_length=255)),
+                ("abuse_confidence_score", models.IntegerField(default=0)),
+                ("total_reports", models.IntegerField(default=0)),
+                ("last_reported", models.DateTimeField(blank=True, null=True)),
+                ("threat_level", models.CharField(default="unknown", max_length=20)),
+                ("risk_score", models.FloatField(default=0.0)),
+                ("is_tor", models.BooleanField(default=False)),
+                ("is_vpn", models.BooleanField(default=False)),
+                ("is_proxy", models.BooleanField(default=False)),
+                ("cached_at", models.DateTimeField(auto_now=True)),
+                ("expires_at", models.DateTimeField(db_index=True)),
             ],
             options={
-                'verbose_name': 'Threat Intelligence Cache',
-                'verbose_name_plural': 'Threat Intelligence Cache',
-                'indexes': [models.Index(fields=['expires_at'], name='core_threat_expires_f59ba0_idx'), models.Index(fields=['threat_level', '-cached_at'], name='core_threat_threat__d0af8d_idx')],
+                "verbose_name": "Threat Intelligence Cache",
+                "verbose_name_plural": "Threat Intelligence Cache",
+                "indexes": [
+                    models.Index(
+                        fields=["expires_at"], name="core_threat_expires_f59ba0_idx"
+                    ),
+                    models.Index(
+                        fields=["threat_level", "-cached_at"],
+                        name="core_threat_threat__d0af8d_idx",
+                    ),
+                ],
             },
         ),
         migrations.CreateModel(
-            name='MLTrainingData',
+            name="MLTrainingData",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('request_frequency', models.FloatField(help_text='Requests per minute')),
-                ('payload_length_avg', models.FloatField(help_text='Average payload size in bytes')),
-                ('payload_length_std', models.FloatField(help_text='Payload size standard deviation')),
-                ('unique_paths', models.IntegerField(help_text='Number of unique paths accessed')),
-                ('error_rate', models.FloatField(help_text='Proportion of 4xx/5xx responses')),
-                ('suspicious_rate', models.FloatField(help_text='Proportion of requests with attack signatures')),
-                ('anomaly_score', models.FloatField(blank=True, help_text='ML anomaly score 0-100', null=True)),
-                ('is_anomaly', models.BooleanField(default=False)),
-                ('model_version', models.CharField(default='v1.0', max_length=50)),
-                ('is_malicious', models.BooleanField(blank=True, help_text='Ground truth label', null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('session', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='ml_features', to='core.attackersession')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "request_frequency",
+                    models.FloatField(help_text="Requests per minute"),
+                ),
+                (
+                    "payload_length_avg",
+                    models.FloatField(help_text="Average payload size in bytes"),
+                ),
+                (
+                    "payload_length_std",
+                    models.FloatField(help_text="Payload size standard deviation"),
+                ),
+                (
+                    "unique_paths",
+                    models.IntegerField(help_text="Number of unique paths accessed"),
+                ),
+                (
+                    "error_rate",
+                    models.FloatField(help_text="Proportion of 4xx/5xx responses"),
+                ),
+                (
+                    "suspicious_rate",
+                    models.FloatField(
+                        help_text="Proportion of requests with attack signatures"
+                    ),
+                ),
+                (
+                    "anomaly_score",
+                    models.FloatField(
+                        blank=True, help_text="ML anomaly score 0-100", null=True
+                    ),
+                ),
+                ("is_anomaly", models.BooleanField(default=False)),
+                ("model_version", models.CharField(default="v1.0", max_length=50)),
+                (
+                    "is_malicious",
+                    models.BooleanField(
+                        blank=True, help_text="Ground truth label", null=True
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True, db_index=True)),
+                (
+                    "session",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="ml_features",
+                        to="core.attackersession",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'ML Training Data',
-                'verbose_name_plural': 'ML Training Data',
-                'ordering': ['-created_at'],
+                "verbose_name": "ML Training Data",
+                "verbose_name_plural": "ML Training Data",
+                "ordering": ["-created_at"],
             },
         ),
         migrations.CreateModel(
-            name='SOARAction',
+            name="SOARAction",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('action_type', models.CharField(choices=[('block', 'Block'), ('unblock', 'Unblock'), ('quarantine', 'Quarantine'), ('alert', 'Alert')], max_length=20)),
-                ('reason', models.CharField(help_text='Human-readable reason for action', max_length=500)),
-                ('automated', models.BooleanField(default=False, help_text='True if triggered by SOAR automation')),
-                ('duration_hours', models.IntegerField(blank=True, help_text='Duration for time-limited actions', null=True)),
-                ('ip_address', models.GenericIPAddressField()),
-                ('metadata', models.JSONField(blank=True, default=dict, help_text='Additional action metadata')),
-                ('created_at', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('session', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='soar_actions', to='core.attackersession')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "action_type",
+                    models.CharField(
+                        choices=[
+                            ("block", "Block"),
+                            ("unblock", "Unblock"),
+                            ("quarantine", "Quarantine"),
+                            ("alert", "Alert"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
+                (
+                    "reason",
+                    models.CharField(
+                        help_text="Human-readable reason for action", max_length=500
+                    ),
+                ),
+                (
+                    "automated",
+                    models.BooleanField(
+                        default=False, help_text="True if triggered by SOAR automation"
+                    ),
+                ),
+                (
+                    "duration_hours",
+                    models.IntegerField(
+                        blank=True,
+                        help_text="Duration for time-limited actions",
+                        null=True,
+                    ),
+                ),
+                ("ip_address", models.GenericIPAddressField()),
+                (
+                    "metadata",
+                    models.JSONField(
+                        blank=True, default=dict, help_text="Additional action metadata"
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True, db_index=True)),
+                (
+                    "session",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="soar_actions",
+                        to="core.attackersession",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'SOAR Action',
-                'verbose_name_plural': 'SOAR Actions',
-                'ordering': ['-created_at'],
-                'indexes': [models.Index(fields=['-created_at', 'action_type'], name='core_soarac_created_177881_idx'), models.Index(fields=['automated', '-created_at'], name='core_soarac_automat_bff9b1_idx')],
+                "verbose_name": "SOAR Action",
+                "verbose_name_plural": "SOAR Actions",
+                "ordering": ["-created_at"],
+                "indexes": [
+                    models.Index(
+                        fields=["-created_at", "action_type"],
+                        name="core_soarac_created_177881_idx",
+                    ),
+                    models.Index(
+                        fields=["automated", "-created_at"],
+                        name="core_soarac_automat_bff9b1_idx",
+                    ),
+                ],
             },
         ),
     ]

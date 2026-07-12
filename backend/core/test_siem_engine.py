@@ -4,23 +4,20 @@ SIEM Engine Tests
 Unit tests for the SIEM detection engine.
 """
 
+import uuid
 import pytest
 from unittest.mock import MagicMock, patch
 from core.siem.engine import SiemEngine, ROUTE_ALLOW, ROUTE_DECEIVE, ROUTE_BLOCK
 
 
 class TestSiemEngine:
-    """Test cases for the SIEM engine."""
-
     @pytest.fixture
     def siem_engine(self):
-        """Create a SIEM engine instance for testing."""
         with patch("django.conf.settings"):
             return SiemEngine()
 
     @pytest.fixture
     def sample_request_data(self):
-        """Sample request data for testing."""
         return {
             "ip": "192.168.1.100",
             "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
@@ -34,71 +31,51 @@ class TestSiemEngine:
         }
 
     def test_engine_initialization(self, siem_engine):
-        """Test that engine initializes correctly."""
         assert siem_engine is not None
         assert hasattr(siem_engine, "_deceive_threshold")
         assert hasattr(siem_engine, "_block_threshold")
 
     def test_evaluate_sql_injection(self, siem_engine, sample_request_data):
-        """Test SQL injection detection."""
         sample_request_data["body"] = "username=admin' OR '1'='1"
         sample_request_data["path"] = "/auth/login/"
-
         result = siem_engine.evaluate(sample_request_data)
-
         assert "attack_type" in result
         assert result["attack_type"] in ["sql_injection", "other"]
         assert "severity" in result
 
     def test_evaluate_xss_payload(self, siem_engine, sample_request_data):
-        """Test XSS payload detection."""
         sample_request_data["body"] = "<script>alert(1)</script>"
         sample_request_data["path"] = "/api/search/"
-
         result = siem_engine.evaluate(sample_request_data)
-
         assert "attack_type" in result
 
     def test_evaluate_normal_request(self, siem_engine, sample_request_data):
-        """Test normal (non-malicious) request."""
         result = siem_engine.evaluate(sample_request_data)
-
         assert result["confidence"] >= 0.0
         assert result["confidence"] <= 1.0
         assert "attack_type" in result
         assert "severity" in result
 
     def test_evaluate_command_injection(self, siem_engine, sample_request_data):
-        """Test command injection detection."""
         sample_request_data["body"] = "username=admin; rm -rf /"
         sample_request_data["path"] = "/api/exec/"
-
         result = siem_engine.evaluate(sample_request_data)
-
         assert "attack_type" in result
 
     def test_evaluate_path_traversal(self, siem_engine, sample_request_data):
-        """Test path traversal detection."""
         sample_request_data["path"] = "/api/files"
         sample_request_data["query_string"] = "path=../../etc/passwd"
-
         result = siem_engine.evaluate(sample_request_data)
-
         assert "attack_type" in result
 
     def test_routing_decision_allow(self, siem_engine, sample_request_data):
-        """Test ALLOW routing decision logic."""
         sample_request_data["body"] = "username=normal&password=password123"
-
         result = siem_engine.evaluate(sample_request_data)
-
         assert "decision" in result
         assert result["decision"] in [ROUTE_ALLOW, ROUTE_DECEIVE, ROUTE_BLOCK]
 
     def test_score_calculation(self, siem_engine):
-        """Test score weight calculation."""
         weights = siem_engine.SCORE_WEIGHTS
-
         assert "sql_injection" in weights
         assert "xss" in weights
         assert "command_injection" in weights
@@ -107,10 +84,7 @@ class TestSiemEngine:
 
 
 class TestSiemSignatures:
-    """Test cases for signature detection."""
-
     def test_detect_sql_injection(self):
-        """Test SQL injection pattern detection."""
         from core.siem.signatures import classify
 
         sql_payloads = [
@@ -119,13 +93,11 @@ class TestSiemSignatures:
             "UNION SELECT * FROM users",
             "'; DROP TABLE users--",
         ]
-
         for payload in sql_payloads:
             result = classify(payload)
             assert result is not None
 
     def test_detect_xss(self):
-        """Test XSS pattern detection."""
         from core.siem.signatures import classify
 
         xss_payloads = [
@@ -134,13 +106,11 @@ class TestSiemSignatures:
             "<svg onload=alert(1)>",
             "javascript:alert(1)",
         ]
-
         for payload in xss_payloads:
             result = classify(payload)
             assert result is not None
 
     def test_detect_command_injection(self):
-        """Test command injection detection."""
         from core.siem.signatures import classify
 
         cmd_payloads = [
@@ -149,13 +119,11 @@ class TestSiemSignatures:
             "`id`",
             "$(whoami)",
         ]
-
         for payload in cmd_payloads:
             result = classify(payload)
             assert result is not None
 
     def test_normal_input_classification(self):
-        """Test normal input doesn't trigger."""
         from core.siem.signatures import classify
 
         normal_inputs = [
@@ -164,81 +132,63 @@ class TestSiemSignatures:
             "hello@email.com",
             "https://example.com",
         ]
-
         for text in normal_inputs:
             result = classify(text)
-            assert result == "other" or result is None
+            assert result["attack_type"] == "other"
 
 
 class TestSoarAutomation:
-    """Test cases for SOAR automation."""
-
     def test_auto_block_threshold(self):
-        """Test auto-block threshold logic."""
-        from core.soar.automation import AUTO_BLOCK_THRESHOLD
+        from django.conf import settings
 
-        assert AUTO_BLOCK_THRESHOLD > 0
-        assert isinstance(AUTO_BLOCK_THRESHOLD, int)
+        threshold = settings.HONEYPOT_CONFIG.get("AUTO_BLOCK_THRESHOLD")
+        assert threshold is not None
+        assert threshold > 0
+        assert isinstance(threshold, int)
 
     @patch("django.core.cache.cache")
     def test_blacklist_check(self, mock_cache):
-        """Test IP blacklist checking."""
         from core.soar.automation import SOAREngine
 
         mock_cache.get.return_value = None
         engine = SOAREngine()
-
         result = engine.check_ip_blacklist("192.168.1.1")
         assert result is None
 
 
 class TestThreatIntel:
-    """Test cases for threat intelligence."""
-
     def test_threat_intel_initialization(self):
-        """Test threat intel module initialization."""
         from core.siem.threat_intel import threat_intel
 
         assert threat_intel is not None
 
     @patch("core.siem.threat_intel.requests.get")
     def test_enrich_session_no_api_key(self, mock_get):
-        """Test enrichment without API key."""
-        from core.siem.threat_intel import ThreatIntel
+        from core.siem.threat_intel import ThreatIntelligenceEnricher
 
-        # Should not raise
-        result = ThreatIntel().enrich_ip("192.168.1.1")
+        result = ThreatIntelligenceEnricher().enrich_ip("192.168.1.1")
         assert result is not None
 
 
 class TestMLAnomaly:
-    """Test cases for ML anomaly detection."""
-
     def test_ml_anomaly_initialization(self):
-        """Test ML anomaly detector initialization."""
         from core.siem.ml_anomaly import get_ml_score
 
-        # Should return result without raising
-        result = get_ml_score("test-session-id")
+        session_id = str(uuid.uuid4())
+        result = get_ml_score(session_id)
         assert isinstance(result, dict)
         assert "is_anomaly" in result
         assert "anomaly_score" in result
 
 
 class TestViews:
-    """Test cases for views."""
-
     @pytest.mark.django_db
     def test_health_check_view(self, client):
-        """Test health check endpoint."""
         response = client.get("/api/health/")
-
         assert response.status_code == 200
         assert b"ok" in response.content or b"status" in response.content
 
     @pytest.mark.django_db
     def test_api_metrics_view(self, client):
-        """Test metrics endpoint."""
         response = client.get("/api/metrics/")
-
         assert response.status_code in [200, 401]

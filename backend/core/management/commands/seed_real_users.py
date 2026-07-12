@@ -7,7 +7,6 @@ import bcrypt
 from django.core.management.base import BaseCommand
 from core.models import RealBankUser
 
-
 DEMO_USERS = [
     (
         "alice",

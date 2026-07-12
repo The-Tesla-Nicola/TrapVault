@@ -14,308 +14,740 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('auth', '0012_alter_user_first_name_max_length'),
+        ("auth", "0012_alter_user_first_name_max_length"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='MonitorUser',
+            name="MonitorUser",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('password', models.CharField(max_length=128, verbose_name='password')),
-                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
-                ('is_superuser', models.BooleanField(default=False, help_text='Designates that this user has all permissions without explicitly assigning them.', verbose_name='superuser status')),
-                ('username', models.CharField(error_messages={'unique': 'A user with that username already exists.'}, help_text='Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.', max_length=150, unique=True, validators=[django.contrib.auth.validators.UnicodeUsernameValidator()], verbose_name='username')),
-                ('first_name', models.CharField(blank=True, max_length=150, verbose_name='first name')),
-                ('last_name', models.CharField(blank=True, max_length=150, verbose_name='last name')),
-                ('email', models.EmailField(blank=True, max_length=254, verbose_name='email address')),
-                ('is_staff', models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')),
-                ('is_active', models.BooleanField(default=True, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='active')),
-                ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
-                ('role', models.CharField(choices=[('admin', 'Administrator'), ('analyst', 'Security Analyst'), ('viewer', 'Viewer')], default='viewer', max_length=20)),
-                ('mfa_enabled', models.BooleanField(default=False)),
-                ('mfa_secret', models.CharField(blank=True, max_length=64)),
-                ('last_login_ip', models.GenericIPAddressField(blank=True, null=True)),
-                ('failed_login_attempts', models.IntegerField(default=0)),
-                ('locked_until', models.DateTimeField(blank=True, null=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("password", models.CharField(max_length=128, verbose_name="password")),
+                (
+                    "last_login",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="last login"
+                    ),
+                ),
+                (
+                    "is_superuser",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates that this user has all permissions without explicitly assigning them.",
+                        verbose_name="superuser status",
+                    ),
+                ),
+                (
+                    "username",
+                    models.CharField(
+                        error_messages={
+                            "unique": "A user with that username already exists."
+                        },
+                        help_text="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+                        max_length=150,
+                        unique=True,
+                        validators=[
+                            django.contrib.auth.validators.UnicodeUsernameValidator()
+                        ],
+                        verbose_name="username",
+                    ),
+                ),
+                (
+                    "first_name",
+                    models.CharField(
+                        blank=True, max_length=150, verbose_name="first name"
+                    ),
+                ),
+                (
+                    "last_name",
+                    models.CharField(
+                        blank=True, max_length=150, verbose_name="last name"
+                    ),
+                ),
+                (
+                    "email",
+                    models.EmailField(
+                        blank=True, max_length=254, verbose_name="email address"
+                    ),
+                ),
+                (
+                    "is_staff",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates whether the user can log into this admin site.",
+                        verbose_name="staff status",
+                    ),
+                ),
+                (
+                    "is_active",
+                    models.BooleanField(
+                        default=True,
+                        help_text="Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
+                        verbose_name="active",
+                    ),
+                ),
+                (
+                    "date_joined",
+                    models.DateTimeField(
+                        default=django.utils.timezone.now, verbose_name="date joined"
+                    ),
+                ),
+                (
+                    "role",
+                    models.CharField(
+                        choices=[
+                            ("admin", "Administrator"),
+                            ("analyst", "Security Analyst"),
+                            ("viewer", "Viewer"),
+                        ],
+                        default="viewer",
+                        max_length=20,
+                    ),
+                ),
+                ("mfa_enabled", models.BooleanField(default=False)),
+                ("mfa_secret", models.CharField(blank=True, max_length=64)),
+                ("last_login_ip", models.GenericIPAddressField(blank=True, null=True)),
+                ("failed_login_attempts", models.IntegerField(default=0)),
+                ("locked_until", models.DateTimeField(blank=True, null=True)),
             ],
             options={
-                'verbose_name': 'Monitor User',
-                'verbose_name_plural': 'Monitor Users',
-                'db_table': 'monitor_users',
+                "verbose_name": "Monitor User",
+                "verbose_name_plural": "Monitor Users",
+                "db_table": "monitor_users",
             },
             managers=[
-                ('objects', django.contrib.auth.models.UserManager()),
+                ("objects", django.contrib.auth.models.UserManager()),
             ],
         ),
         migrations.CreateModel(
-            name='AlertRule',
+            name="AlertRule",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=200)),
-                ('description', models.TextField(blank=True)),
-                ('is_active', models.BooleanField(default=True)),
-                ('match_severity', models.CharField(blank=True, help_text='Leave blank to match all severities.', max_length=20)),
-                ('match_attack_type', models.CharField(blank=True, help_text='Leave blank to match all types.', max_length=60)),
-                ('min_confidence', models.FloatField(default=0.0)),
-                ('min_session_score', models.IntegerField(default=0)),
-                ('notification_channel', models.CharField(choices=[('slack', 'Slack'), ('email', 'Email'), ('both', 'Slack + Email'), ('db', 'Database only')], default='db', max_length=10)),
-                ('auto_block', models.BooleanField(default=False, help_text='Automatically block matching sessions.')),
-                ('cooldown_seconds', models.IntegerField(default=300)),
-                ('created_at', models.DateTimeField(default=django.utils.timezone.now)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("name", models.CharField(max_length=200)),
+                ("description", models.TextField(blank=True)),
+                ("is_active", models.BooleanField(default=True)),
+                (
+                    "match_severity",
+                    models.CharField(
+                        blank=True,
+                        help_text="Leave blank to match all severities.",
+                        max_length=20,
+                    ),
+                ),
+                (
+                    "match_attack_type",
+                    models.CharField(
+                        blank=True,
+                        help_text="Leave blank to match all types.",
+                        max_length=60,
+                    ),
+                ),
+                ("min_confidence", models.FloatField(default=0.0)),
+                ("min_session_score", models.IntegerField(default=0)),
+                (
+                    "notification_channel",
+                    models.CharField(
+                        choices=[
+                            ("slack", "Slack"),
+                            ("email", "Email"),
+                            ("both", "Slack + Email"),
+                            ("db", "Database only"),
+                        ],
+                        default="db",
+                        max_length=10,
+                    ),
+                ),
+                (
+                    "auto_block",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Automatically block matching sessions.",
+                    ),
+                ),
+                ("cooldown_seconds", models.IntegerField(default=300)),
+                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
             ],
             options={
-                'db_table': 'alert_rules',
-                'ordering': ['-created_at'],
+                "db_table": "alert_rules",
+                "ordering": ["-created_at"],
             },
         ),
         migrations.CreateModel(
-            name='AttackerSession',
+            name="AttackerSession",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('fingerprint', models.CharField(db_index=True, max_length=64, unique=True)),
-                ('ip_address', models.GenericIPAddressField(db_index=True)),
-                ('user_agent', models.TextField(blank=True)),
-                ('browser_fingerprint', models.JSONField(blank=True, default=dict)),
-                ('tls_fingerprint', models.CharField(blank=True, max_length=64)),
-                ('country_code', models.CharField(blank=True, max_length=2)),
-                ('country_name', models.CharField(blank=True, max_length=100)),
-                ('city', models.CharField(blank=True, max_length=100)),
-                ('latitude', models.FloatField(blank=True, null=True)),
-                ('longitude', models.FloatField(blank=True, null=True)),
-                ('asn', models.CharField(blank=True, max_length=50)),
-                ('asn_org', models.CharField(blank=True, max_length=200)),
-                ('is_tor', models.BooleanField(default=False)),
-                ('is_vpn', models.BooleanField(default=False)),
-                ('is_proxy', models.BooleanField(default=False)),
-                ('first_seen', models.DateTimeField(db_index=True, default=django.utils.timezone.now)),
-                ('last_seen', models.DateTimeField(default=django.utils.timezone.now)),
-                ('total_requests', models.IntegerField(default=0)),
-                ('total_time_wasted_seconds', models.IntegerField(default=0)),
-                ('threat_score', models.IntegerField(db_index=True, default=0)),
-                ('threat_level', models.CharField(default='minimal', max_length=20)),
-                ('attack_vectors_used', models.JSONField(blank=True, default=list)),
-                ('is_blocked', models.BooleanField(db_index=True, default=False)),
-                ('blocked_at', models.DateTimeField(blank=True, null=True)),
-                ('block_reason', models.TextField(blank=True)),
-                ('analyst_notes', models.TextField(blank=True)),
-                ('tags', models.JSONField(blank=True, default=list)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "fingerprint",
+                    models.CharField(db_index=True, max_length=64, unique=True),
+                ),
+                ("ip_address", models.GenericIPAddressField(db_index=True)),
+                ("user_agent", models.TextField(blank=True)),
+                ("browser_fingerprint", models.JSONField(blank=True, default=dict)),
+                ("tls_fingerprint", models.CharField(blank=True, max_length=64)),
+                ("country_code", models.CharField(blank=True, max_length=2)),
+                ("country_name", models.CharField(blank=True, max_length=100)),
+                ("city", models.CharField(blank=True, max_length=100)),
+                ("latitude", models.FloatField(blank=True, null=True)),
+                ("longitude", models.FloatField(blank=True, null=True)),
+                ("asn", models.CharField(blank=True, max_length=50)),
+                ("asn_org", models.CharField(blank=True, max_length=200)),
+                ("is_tor", models.BooleanField(default=False)),
+                ("is_vpn", models.BooleanField(default=False)),
+                ("is_proxy", models.BooleanField(default=False)),
+                (
+                    "first_seen",
+                    models.DateTimeField(
+                        db_index=True, default=django.utils.timezone.now
+                    ),
+                ),
+                ("last_seen", models.DateTimeField(default=django.utils.timezone.now)),
+                ("total_requests", models.IntegerField(default=0)),
+                ("total_time_wasted_seconds", models.IntegerField(default=0)),
+                ("threat_score", models.IntegerField(db_index=True, default=0)),
+                ("threat_level", models.CharField(default="minimal", max_length=20)),
+                ("attack_vectors_used", models.JSONField(blank=True, default=list)),
+                ("is_blocked", models.BooleanField(db_index=True, default=False)),
+                ("blocked_at", models.DateTimeField(blank=True, null=True)),
+                ("block_reason", models.TextField(blank=True)),
+                ("analyst_notes", models.TextField(blank=True)),
+                ("tags", models.JSONField(blank=True, default=list)),
             ],
             options={
-                'db_table': 'attacker_sessions',
-                'ordering': ['-last_seen'],
+                "db_table": "attacker_sessions",
+                "ordering": ["-last_seen"],
             },
         ),
         migrations.CreateModel(
-            name='AttackEvent',
+            name="AttackEvent",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('timestamp', models.DateTimeField(db_index=True, default=django.utils.timezone.now)),
-                ('method', models.CharField(max_length=10)),
-                ('path', models.TextField()),
-                ('query_string', models.TextField(blank=True)),
-                ('headers', models.JSONField(blank=True, default=dict)),
-                ('body', models.TextField(blank=True)),
-                ('body_json', models.JSONField(blank=True, null=True)),
-                ('attack_type', models.CharField(choices=[('login_attempt', 'Login Attempt'), ('sql_injection', 'SQL Injection'), ('xss', 'Cross-Site Scripting'), ('command_injection', 'Command Injection'), ('path_traversal', 'Path Traversal'), ('ssrf', 'Server-Side Request Forgery'), ('xxe', 'XML External Entity'), ('brute_force', 'Brute Force'), ('auth_bypass', 'Authentication Bypass'), ('data_exfil', 'Data Exfiltration'), ('reconnaissance', 'Reconnaissance'), ('api_probe', 'API Probing'), ('other', 'Other')], db_index=True, default='other', max_length=50)),
-                ('severity', models.CharField(choices=[('info', 'Info'), ('low', 'Low'), ('medium', 'Medium'), ('high', 'High'), ('critical', 'Critical')], db_index=True, default='info', max_length=20)),
-                ('confidence', models.FloatField(default=0.0)),
-                ('detected_patterns', models.JSONField(blank=True, default=list)),
-                ('rules_matched', models.JSONField(blank=True, default=list)),
-                ('ioc_extracted', models.JSONField(blank=True, default=list)),
-                ('response_status', models.IntegerField(default=200)),
-                ('response_delay_ms', models.IntegerField(default=0)),
-                ('session', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='events', to='core.attackersession')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "timestamp",
+                    models.DateTimeField(
+                        db_index=True, default=django.utils.timezone.now
+                    ),
+                ),
+                ("method", models.CharField(max_length=10)),
+                ("path", models.TextField()),
+                ("query_string", models.TextField(blank=True)),
+                ("headers", models.JSONField(blank=True, default=dict)),
+                ("body", models.TextField(blank=True)),
+                ("body_json", models.JSONField(blank=True, null=True)),
+                (
+                    "attack_type",
+                    models.CharField(
+                        choices=[
+                            ("login_attempt", "Login Attempt"),
+                            ("sql_injection", "SQL Injection"),
+                            ("xss", "Cross-Site Scripting"),
+                            ("command_injection", "Command Injection"),
+                            ("path_traversal", "Path Traversal"),
+                            ("ssrf", "Server-Side Request Forgery"),
+                            ("xxe", "XML External Entity"),
+                            ("brute_force", "Brute Force"),
+                            ("auth_bypass", "Authentication Bypass"),
+                            ("data_exfil", "Data Exfiltration"),
+                            ("reconnaissance", "Reconnaissance"),
+                            ("api_probe", "API Probing"),
+                            ("other", "Other"),
+                        ],
+                        db_index=True,
+                        default="other",
+                        max_length=50,
+                    ),
+                ),
+                (
+                    "severity",
+                    models.CharField(
+                        choices=[
+                            ("info", "Info"),
+                            ("low", "Low"),
+                            ("medium", "Medium"),
+                            ("high", "High"),
+                            ("critical", "Critical"),
+                        ],
+                        db_index=True,
+                        default="info",
+                        max_length=20,
+                    ),
+                ),
+                ("confidence", models.FloatField(default=0.0)),
+                ("detected_patterns", models.JSONField(blank=True, default=list)),
+                ("rules_matched", models.JSONField(blank=True, default=list)),
+                ("ioc_extracted", models.JSONField(blank=True, default=list)),
+                ("response_status", models.IntegerField(default=200)),
+                ("response_delay_ms", models.IntegerField(default=0)),
+                (
+                    "session",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="events",
+                        to="core.attackersession",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'attack_events',
-                'ordering': ['-timestamp'],
+                "db_table": "attack_events",
+                "ordering": ["-timestamp"],
             },
         ),
         migrations.CreateModel(
-            name='DeceptionAsset',
+            name="DeceptionAsset",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=200)),
-                ('asset_type', models.CharField(choices=[('endpoint', 'Fake API Endpoint'), ('file', 'Fake File'), ('credential', 'Fake Credential'), ('token', 'Canary Token'), ('breadcrumb', 'Breadcrumb')], max_length=50)),
-                ('description', models.TextField(blank=True)),
-                ('path', models.CharField(blank=True, max_length=500)),
-                ('content', models.TextField(blank=True)),
-                ('is_active', models.BooleanField(default=True)),
-                ('created_at', models.DateTimeField(default=django.utils.timezone.now)),
-                ('access_count', models.IntegerField(default=0)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("name", models.CharField(max_length=200)),
+                (
+                    "asset_type",
+                    models.CharField(
+                        choices=[
+                            ("endpoint", "Fake API Endpoint"),
+                            ("file", "Fake File"),
+                            ("credential", "Fake Credential"),
+                            ("token", "Canary Token"),
+                            ("breadcrumb", "Breadcrumb"),
+                        ],
+                        max_length=50,
+                    ),
+                ),
+                ("description", models.TextField(blank=True)),
+                ("path", models.CharField(blank=True, max_length=500)),
+                ("content", models.TextField(blank=True)),
+                ("is_active", models.BooleanField(default=True)),
+                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
+                ("access_count", models.IntegerField(default=0)),
             ],
             options={
-                'db_table': 'deception_assets',
-                'ordering': ['-access_count'],
+                "db_table": "deception_assets",
+                "ordering": ["-access_count"],
             },
         ),
         migrations.CreateModel(
-            name='RealBankUser',
+            name="RealBankUser",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('username', models.CharField(db_index=True, max_length=150, unique=True)),
-                ('password_hash', models.CharField(max_length=256)),
-                ('email', models.EmailField(max_length=254, unique=True)),
-                ('full_name', models.CharField(max_length=200)),
-                ('account_number', models.CharField(max_length=20, unique=True)),
-                ('is_active', models.BooleanField(default=True)),
-                ('created_at', models.DateTimeField(default=django.utils.timezone.now)),
-                ('last_login', models.DateTimeField(blank=True, null=True)),
-                ('last_login_ip', models.GenericIPAddressField(blank=True, null=True)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "username",
+                    models.CharField(db_index=True, max_length=150, unique=True),
+                ),
+                ("password_hash", models.CharField(max_length=256)),
+                ("email", models.EmailField(max_length=254, unique=True)),
+                ("full_name", models.CharField(max_length=200)),
+                ("account_number", models.CharField(max_length=20, unique=True)),
+                ("is_active", models.BooleanField(default=True)),
+                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
+                ("last_login", models.DateTimeField(blank=True, null=True)),
+                ("last_login_ip", models.GenericIPAddressField(blank=True, null=True)),
             ],
             options={
-                'db_table': 'real_bank_users',
+                "db_table": "real_bank_users",
             },
         ),
         migrations.CreateModel(
-            name='SiemAlert',
+            name="SiemAlert",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('timestamp', models.DateTimeField(db_index=True, default=django.utils.timezone.now)),
-                ('fingerprint', models.CharField(blank=True, db_index=True, max_length=64)),
-                ('attack_type', models.CharField(db_index=True, max_length=60)),
-                ('severity', models.CharField(choices=[('info', 'Info'), ('low', 'Low'), ('medium', 'Medium'), ('high', 'High'), ('critical', 'Critical')], db_index=True, max_length=20)),
-                ('confidence', models.FloatField(default=0.0)),
-                ('session_score', models.IntegerField(default=0)),
-                ('routing_decision', models.CharField(choices=[('ALLOW', 'Allowed to real app'), ('DECEIVE', 'Routed to honeypot'), ('BLOCK', 'Blocked')], max_length=10)),
-                ('patterns_matched', models.JSONField(default=list)),
-                ('iocs', models.JSONField(default=list)),
-                ('is_brute_force', models.BooleanField(default=False)),
-                ('is_burst', models.BooleanField(default=False)),
-                ('is_acknowledged', models.BooleanField(db_index=True, default=False)),
-                ('acknowledged_at', models.DateTimeField(blank=True, null=True)),
-                ('analyst_note', models.TextField(blank=True)),
-                ('acknowledged_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='acknowledged_alerts', to=settings.AUTH_USER_MODEL)),
-                ('session', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='siem_alerts', to='core.attackersession')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "timestamp",
+                    models.DateTimeField(
+                        db_index=True, default=django.utils.timezone.now
+                    ),
+                ),
+                (
+                    "fingerprint",
+                    models.CharField(blank=True, db_index=True, max_length=64),
+                ),
+                ("attack_type", models.CharField(db_index=True, max_length=60)),
+                (
+                    "severity",
+                    models.CharField(
+                        choices=[
+                            ("info", "Info"),
+                            ("low", "Low"),
+                            ("medium", "Medium"),
+                            ("high", "High"),
+                            ("critical", "Critical"),
+                        ],
+                        db_index=True,
+                        max_length=20,
+                    ),
+                ),
+                ("confidence", models.FloatField(default=0.0)),
+                ("session_score", models.IntegerField(default=0)),
+                (
+                    "routing_decision",
+                    models.CharField(
+                        choices=[
+                            ("ALLOW", "Allowed to real app"),
+                            ("DECEIVE", "Routed to honeypot"),
+                            ("BLOCK", "Blocked"),
+                        ],
+                        max_length=10,
+                    ),
+                ),
+                ("patterns_matched", models.JSONField(default=list)),
+                ("iocs", models.JSONField(default=list)),
+                ("is_brute_force", models.BooleanField(default=False)),
+                ("is_burst", models.BooleanField(default=False)),
+                ("is_acknowledged", models.BooleanField(db_index=True, default=False)),
+                ("acknowledged_at", models.DateTimeField(blank=True, null=True)),
+                ("analyst_note", models.TextField(blank=True)),
+                (
+                    "acknowledged_by",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="acknowledged_alerts",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "session",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="siem_alerts",
+                        to="core.attackersession",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'siem_alerts',
-                'ordering': ['-timestamp'],
+                "db_table": "siem_alerts",
+                "ordering": ["-timestamp"],
             },
         ),
         migrations.CreateModel(
-            name='MonitorAuditLog',
+            name="MonitorAuditLog",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('timestamp', models.DateTimeField(db_index=True, default=django.utils.timezone.now)),
-                ('action', models.CharField(db_index=True, max_length=100)),
-                ('ip_address', models.GenericIPAddressField(blank=True, null=True)),
-                ('resource_type', models.CharField(blank=True, max_length=50)),
-                ('resource_id', models.CharField(blank=True, max_length=100)),
-                ('details', models.JSONField(blank=True, default=dict)),
-                ('success', models.BooleanField(default=True)),
-                ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='audit_logs', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "timestamp",
+                    models.DateTimeField(
+                        db_index=True, default=django.utils.timezone.now
+                    ),
+                ),
+                ("action", models.CharField(db_index=True, max_length=100)),
+                ("ip_address", models.GenericIPAddressField(blank=True, null=True)),
+                ("resource_type", models.CharField(blank=True, max_length=50)),
+                ("resource_id", models.CharField(blank=True, max_length=100)),
+                ("details", models.JSONField(blank=True, default=dict)),
+                ("success", models.BooleanField(default=True)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="audit_logs",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'db_table': 'monitor_audit_logs',
-                'ordering': ['-timestamp'],
+                "db_table": "monitor_audit_logs",
+                "ordering": ["-timestamp"],
             },
         ),
         migrations.CreateModel(
-            name='LoginAttempt',
+            name="LoginAttempt",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('timestamp', models.DateTimeField(db_index=True, default=django.utils.timezone.now)),
-                ('ip_address', models.GenericIPAddressField(db_index=True)),
-                ('fingerprint', models.CharField(blank=True, db_index=True, max_length=64)),
-                ('username', models.CharField(max_length=500)),
-                ('user_agent', models.TextField(blank=True)),
-                ('outcome', models.CharField(choices=[('routed_real', 'Routed to real application'), ('routed_honeypot', 'Routed to honeypot'), ('blocked', 'Blocked'), ('real_success', 'Successful real login'), ('real_failure', 'Failed real login')], max_length=30)),
-                ('siem_score_delta', models.IntegerField(default=0)),
-                ('session_score', models.IntegerField(default=0)),
-                ('attack_type', models.CharField(default='none', max_length=60)),
-                ('confidence', models.FloatField(default=0.0)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "timestamp",
+                    models.DateTimeField(
+                        db_index=True, default=django.utils.timezone.now
+                    ),
+                ),
+                ("ip_address", models.GenericIPAddressField(db_index=True)),
+                (
+                    "fingerprint",
+                    models.CharField(blank=True, db_index=True, max_length=64),
+                ),
+                ("username", models.CharField(max_length=500)),
+                ("user_agent", models.TextField(blank=True)),
+                (
+                    "outcome",
+                    models.CharField(
+                        choices=[
+                            ("routed_real", "Routed to real application"),
+                            ("routed_honeypot", "Routed to honeypot"),
+                            ("blocked", "Blocked"),
+                            ("real_success", "Successful real login"),
+                            ("real_failure", "Failed real login"),
+                        ],
+                        max_length=30,
+                    ),
+                ),
+                ("siem_score_delta", models.IntegerField(default=0)),
+                ("session_score", models.IntegerField(default=0)),
+                ("attack_type", models.CharField(default="none", max_length=60)),
+                ("confidence", models.FloatField(default=0.0)),
             ],
             options={
-                'db_table': 'login_attempts',
-                'ordering': ['-timestamp'],
-                'indexes': [models.Index(fields=['ip_address', 'timestamp'], name='login_attem_ip_addr_340a7c_idx'), models.Index(fields=['outcome', 'timestamp'], name='login_attem_outcome_3c0865_idx')],
+                "db_table": "login_attempts",
+                "ordering": ["-timestamp"],
+                "indexes": [
+                    models.Index(
+                        fields=["ip_address", "timestamp"],
+                        name="login_attem_ip_addr_340a7c_idx",
+                    ),
+                    models.Index(
+                        fields=["outcome", "timestamp"],
+                        name="login_attem_outcome_3c0865_idx",
+                    ),
+                ],
             },
         ),
         migrations.CreateModel(
-            name='DeceptionInteraction',
+            name="DeceptionInteraction",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('timestamp', models.DateTimeField(default=django.utils.timezone.now)),
-                ('interaction_type', models.CharField(default='access', max_length=50)),
-                ('metadata', models.JSONField(blank=True, default=dict)),
-                ('asset', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='interactions', to='core.deceptionasset')),
-                ('session', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='deception_interactions', to='core.attackersession')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("timestamp", models.DateTimeField(default=django.utils.timezone.now)),
+                ("interaction_type", models.CharField(default="access", max_length=50)),
+                ("metadata", models.JSONField(blank=True, default=dict)),
+                (
+                    "asset",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="interactions",
+                        to="core.deceptionasset",
+                    ),
+                ),
+                (
+                    "session",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="deception_interactions",
+                        to="core.attackersession",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'deception_interactions',
-                'ordering': ['-timestamp'],
+                "db_table": "deception_interactions",
+                "ordering": ["-timestamp"],
             },
         ),
         migrations.CreateModel(
-            name='CapturedCredential',
+            name="CapturedCredential",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('timestamp', models.DateTimeField(db_index=True, default=django.utils.timezone.now)),
-                ('username', models.CharField(max_length=500)),
-                ('password', models.CharField(max_length=500)),
-                ('is_default_credential', models.BooleanField(default=False)),
-                ('is_common_password', models.BooleanField(default=False)),
-                ('password_strength', models.CharField(default='unknown', max_length=20)),
-                ('credential_type', models.CharField(default='unknown', max_length=50)),
-                ('event', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='credentials', to='core.attackevent')),
-                ('session', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='credentials', to='core.attackersession')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "timestamp",
+                    models.DateTimeField(
+                        db_index=True, default=django.utils.timezone.now
+                    ),
+                ),
+                ("username", models.CharField(max_length=500)),
+                ("password", models.CharField(max_length=500)),
+                ("is_default_credential", models.BooleanField(default=False)),
+                ("is_common_password", models.BooleanField(default=False)),
+                (
+                    "password_strength",
+                    models.CharField(default="unknown", max_length=20),
+                ),
+                ("credential_type", models.CharField(default="unknown", max_length=50)),
+                (
+                    "event",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="credentials",
+                        to="core.attackevent",
+                    ),
+                ),
+                (
+                    "session",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="credentials",
+                        to="core.attackersession",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'captured_credentials',
-                'ordering': ['-timestamp'],
+                "db_table": "captured_credentials",
+                "ordering": ["-timestamp"],
             },
         ),
         migrations.AddIndex(
-            model_name='attackersession',
-            index=models.Index(fields=['ip_address', 'first_seen'], name='attacker_se_ip_addr_5e9f58_idx'),
+            model_name="attackersession",
+            index=models.Index(
+                fields=["ip_address", "first_seen"],
+                name="attacker_se_ip_addr_5e9f58_idx",
+            ),
         ),
         migrations.AddIndex(
-            model_name='attackersession',
-            index=models.Index(fields=['threat_score'], name='attacker_se_threat__e27ad6_idx'),
+            model_name="attackersession",
+            index=models.Index(
+                fields=["threat_score"], name="attacker_se_threat__e27ad6_idx"
+            ),
         ),
         migrations.AddIndex(
-            model_name='attackersession',
-            index=models.Index(fields=['is_blocked', 'last_seen'], name='attacker_se_is_bloc_359637_idx'),
+            model_name="attackersession",
+            index=models.Index(
+                fields=["is_blocked", "last_seen"],
+                name="attacker_se_is_bloc_359637_idx",
+            ),
         ),
         migrations.AddField(
-            model_name='alertrule',
-            name='created_by',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL),
+            model_name="alertrule",
+            name="created_by",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
-            model_name='monitoruser',
-            name='groups',
-            field=models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups'),
+            model_name="monitoruser",
+            name="groups",
+            field=models.ManyToManyField(
+                blank=True,
+                help_text="The groups this user belongs to. A user will get all permissions granted to each of their groups.",
+                related_name="user_set",
+                related_query_name="user",
+                to="auth.group",
+                verbose_name="groups",
+            ),
         ),
         migrations.AddField(
-            model_name='monitoruser',
-            name='user_permissions',
-            field=models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.permission', verbose_name='user permissions'),
+            model_name="monitoruser",
+            name="user_permissions",
+            field=models.ManyToManyField(
+                blank=True,
+                help_text="Specific permissions for this user.",
+                related_name="user_set",
+                related_query_name="user",
+                to="auth.permission",
+                verbose_name="user permissions",
+            ),
         ),
         migrations.AddIndex(
-            model_name='siemalert',
-            index=models.Index(fields=['severity', 'timestamp'], name='siem_alerts_severit_ca4b13_idx'),
+            model_name="siemalert",
+            index=models.Index(
+                fields=["severity", "timestamp"], name="siem_alerts_severit_ca4b13_idx"
+            ),
         ),
         migrations.AddIndex(
-            model_name='siemalert',
-            index=models.Index(fields=['attack_type', 'timestamp'], name='siem_alerts_attack__fe388d_idx'),
+            model_name="siemalert",
+            index=models.Index(
+                fields=["attack_type", "timestamp"],
+                name="siem_alerts_attack__fe388d_idx",
+            ),
         ),
         migrations.AddIndex(
-            model_name='siemalert',
-            index=models.Index(fields=['is_acknowledged', 'severity'], name='siem_alerts_is_ackn_7ff1eb_idx'),
+            model_name="siemalert",
+            index=models.Index(
+                fields=["is_acknowledged", "severity"],
+                name="siem_alerts_is_ackn_7ff1eb_idx",
+            ),
         ),
         migrations.AddIndex(
-            model_name='attackevent',
-            index=models.Index(fields=['session', 'timestamp'], name='attack_even_session_0d67b3_idx'),
+            model_name="attackevent",
+            index=models.Index(
+                fields=["session", "timestamp"], name="attack_even_session_0d67b3_idx"
+            ),
         ),
         migrations.AddIndex(
-            model_name='attackevent',
-            index=models.Index(fields=['attack_type', 'timestamp'], name='attack_even_attack__755681_idx'),
+            model_name="attackevent",
+            index=models.Index(
+                fields=["attack_type", "timestamp"],
+                name="attack_even_attack__755681_idx",
+            ),
         ),
         migrations.AddIndex(
-            model_name='attackevent',
-            index=models.Index(fields=['severity', 'timestamp'], name='attack_even_severit_c06d41_idx'),
+            model_name="attackevent",
+            index=models.Index(
+                fields=["severity", "timestamp"], name="attack_even_severit_c06d41_idx"
+            ),
         ),
     ]

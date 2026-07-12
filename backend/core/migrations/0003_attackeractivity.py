@@ -9,25 +9,67 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0002_attackersession_abuse_confidence_score_and_more'),
+        ("core", "0002_attackersession_abuse_confidence_score_and_more"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='AttackerActivity',
+            name="AttackerActivity",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('timestamp', models.DateTimeField(db_index=True, default=django.utils.timezone.now)),
-                ('event_type', models.CharField(choices=[('keystroke', 'Keystroke'), ('mouse_move', 'Mouse Movement'), ('click', 'Click'), ('scroll', 'Scroll'), ('focus', 'Focus')], db_index=True, max_length=20)),
-                ('data', models.JSONField(blank=True, default=dict)),
-                ('path', models.CharField(blank=True, max_length=500)),
-                ('element_id', models.CharField(blank=True, max_length=255)),
-                ('session', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='activity_logs', to='core.attackersession')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "timestamp",
+                    models.DateTimeField(
+                        db_index=True, default=django.utils.timezone.now
+                    ),
+                ),
+                (
+                    "event_type",
+                    models.CharField(
+                        choices=[
+                            ("keystroke", "Keystroke"),
+                            ("mouse_move", "Mouse Movement"),
+                            ("click", "Click"),
+                            ("scroll", "Scroll"),
+                            ("focus", "Focus"),
+                        ],
+                        db_index=True,
+                        max_length=20,
+                    ),
+                ),
+                ("data", models.JSONField(blank=True, default=dict)),
+                ("path", models.CharField(blank=True, max_length=500)),
+                ("element_id", models.CharField(blank=True, max_length=255)),
+                (
+                    "session",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="activity_logs",
+                        to="core.attackersession",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'attacker_activity',
-                'ordering': ['timestamp'],
-                'indexes': [models.Index(fields=['session', 'timestamp'], name='attacker_ac_session_f96481_idx'), models.Index(fields=['event_type', 'timestamp'], name='attacker_ac_event_t_d979db_idx')],
+                "db_table": "attacker_activity",
+                "ordering": ["timestamp"],
+                "indexes": [
+                    models.Index(
+                        fields=["session", "timestamp"],
+                        name="attacker_ac_session_f96481_idx",
+                    ),
+                    models.Index(
+                        fields=["event_type", "timestamp"],
+                        name="attacker_ac_event_t_d979db_idx",
+                    ),
+                ],
             },
         ),
     ]

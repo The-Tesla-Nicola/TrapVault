@@ -614,12 +614,14 @@ def api_session_detail(request, session_id):
                 "attack_vectors_used": session.attack_vectors_used,
                 "time_wasted_seconds": session.total_time_wasted_seconds,
                 "is_blocked": session.is_blocked,
-                "blocked_at": session.blocked_at.isoformat()
-                if session.blocked_at
-                else None,
-                "block_expires_at": session.block_expires_at.isoformat()
-                if session.block_expires_at
-                else None,
+                "blocked_at": (
+                    session.blocked_at.isoformat() if session.blocked_at else None
+                ),
+                "block_expires_at": (
+                    session.block_expires_at.isoformat()
+                    if session.block_expires_at
+                    else None
+                ),
                 "block_reason": session.block_reason,
                 "analyst_notes": session.analyst_notes,
                 "tags": session.tags,

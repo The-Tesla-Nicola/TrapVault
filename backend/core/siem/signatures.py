@@ -7,7 +7,6 @@ import json
 import hashlib
 from typing import Any, Dict, List, Tuple
 
-
 SIGNATURES: List[Tuple[str, str, float]] = [
     (r"'\s*(or|and)\s+[\d'\"]+\s*=\s*[\d'\"]+", "sqli_boolean_basic", 0.95),
     (r"union\s+(all\s+)?select", "sqli_union_select", 0.97),
