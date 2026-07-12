@@ -60,7 +60,7 @@ class MiddlewareTest(TestCase):
         ua = "test-ua"
         import hashlib
 
-        fp_raw = f"{ip}|{ua}"
+        fp_raw = f"{ip}|{ua}|"
         fingerprint = hashlib.sha256(fp_raw.encode()).hexdigest()[:32]
 
         session = AttackerSession.objects.create(

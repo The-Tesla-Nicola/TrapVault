@@ -17,7 +17,7 @@ const TransferForm: React.FC = () => {
     e.preventDefault();
     setStatus('loading');
     // Fire to deception endpoint — SIEM logs this interaction
-    try { await client.post('/search/', { q: `transfer_${amount}_to_${to}` }); } catch {}
+    try { await client.post('/search/', { q: `transfer_${amount}_to_${to}` }); } catch { /* ignored */ }
     setTimeout(() => setStatus('done'), 1400);
   };
 

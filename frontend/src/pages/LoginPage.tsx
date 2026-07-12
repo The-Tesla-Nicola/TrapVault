@@ -63,7 +63,7 @@ const LoginPage: React.FC<Props> = ({ onLogin }) => {
     e.preventDefault();
     try {
       await client.post('/password-reset/', { email: forgotEmail });
-    } catch {}
+    } catch { /* ignored */ }
     setForgotSent(true);
   };
 
