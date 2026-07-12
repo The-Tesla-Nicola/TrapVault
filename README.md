@@ -249,15 +249,6 @@ Key metrics:
 
 ---
 
-## Documentation
-
-- [Architecture Deep Dive](docs/ARCHITECTURE.md)
-- [API Reference](docs/API.md)
-- [Deployment Guide](docs/DEPLOYMENT.md)
-- [ML Model Training](docs/ML_TRAINING.md)
-- [SOAR Playbooks](docs/SOAR_PLAYBOOKS.md)
-
----
 
 ## Contributing
 
